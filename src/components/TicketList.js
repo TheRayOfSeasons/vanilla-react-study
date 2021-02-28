@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { TicketRow } from './Ticket';
+import { TicketRow } from './TicketRow';
 
 export const TicketList = ({ tickets, types }) => {
-  const onTypeChange = ({ type, seat }) => {
-    console.log(type);
-    console.log(seat);
+  const [currentTickets, setCurrentTickets] = useState(tickets);
+  const onTicketChange = ticket => {
+    const currentTicketsCopy = [...currentTickets];
+    for(const i in currentTicketsCopy)
+    {
+      if(currentTicketsCopy[i].id === ticket.id)
+      {
+        currentTicketsCopy[i] = ticket;
+        break;
+      }
+    }
+    setCurrentTickets(currentTicketsCopy);
   }
+  useEffect(() => {
+    console.log(currentTickets);
+  }, [currentTickets]);
   return (
     <>
       <table>
@@ -20,15 +32,15 @@ export const TicketList = ({ tickets, types }) => {
           </tr>
         </thead>
         <tbody>
-          {tickets.map(({ id, seat, type, price, subtotal }) =>
+          {currentTickets.map(({ id, seat, type, price, subtotal }) =>
             <TicketRow
+              onTicketRowUpdate={ticket => onTicketChange(ticket)}
               id={id}
               seat={seat}
               type={type}
               types={types}
               price={price}
               subtotal={subtotal}
-              onTypeChange={onTypeChange}
               />
           )}
         </tbody>

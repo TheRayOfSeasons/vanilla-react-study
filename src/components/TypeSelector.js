@@ -3,7 +3,6 @@ import { TicketService } from '../services/TicketService';
 
 export const TypeSelector = ({ types, defaultValue, onSelect }) => {
   const emitSelected = id => {
-    console.log(`emit ${id}`);
     onSelect(types.find(_type => _type.id === parseInt(id)));
   }
   return (
